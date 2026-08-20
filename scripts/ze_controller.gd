@@ -31,7 +31,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if is_busy:
 		return
-	var metabolic_cost = (speed/ 150.0) * hunger_lost_rate
+	var metabolic_cost = pow(speed/ 100.0, 1.2) * hunger_lost_rate
 	hunger -= metabolic_cost * delta
 	if hunger <= 0:
 		die()
@@ -170,8 +170,8 @@ func reproduce_with(partner: Node2D) -> void:
 	mating_cooldown = 8.0
 	partner.mating_cooldown = 8.0
 	
-	hunger -= 30.0
-	partner.hunger -= 30.0
+	hunger -= 50.0
+	partner.hunger -= 50.0
 	
 	var ze_scene = load("res://prefabs/ze.tscn")
 	var baby = ze_scene.instantiate()

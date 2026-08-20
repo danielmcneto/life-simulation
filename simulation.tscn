@@ -22,6 +22,9 @@ position = Vector2(551, 110)
 [node name="comida4" parent="." unique_id=1245704970 instance=ExtResource("1_7ptn5")]
 position = Vector2(-245, -296)
 
+[node name="comida5" parent="." unique_id=1237330958 instance=ExtResource("1_7ptn5")]
+position = Vector2(-970, 118)
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1756843663]
 zoom = Vector2(0.5, 0.5)
 

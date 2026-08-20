@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 	
 	if total_zes == 0:
 		if ui_text:
-			ui_text.text = "Species extinct! F de Vasco."
+			ui_text.text = "Species extinct!"
 		return
 		
 	var sum_speed: float = 0.0
