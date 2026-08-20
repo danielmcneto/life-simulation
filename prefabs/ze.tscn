@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ds5tj4lc1t4yt"]
+
+[ext_resource type="Script" uid="uid://brajkmso08ecu" path="res://scripts/ze_controller.gd" id="1_axcdq"]
+[ext_resource type="Texture2D" uid="uid://46j2qhwoco35" path="res://sprites/zezzit.png" id="2_axcdq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g4v7s"]
+
+[node name="Node2D" type="Node2D" unique_id=637619512]
+scale = Vector2(0.6, 0.6)
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1482277861 groups=["zezzits"]]
+collision_mask = 0
+script = ExtResource("1_axcdq")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=298709636]
+scale = Vector2(2, 2)
+texture = ExtResource("2_axcdq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=140901386]
+scale = Vector2(6.4, 6.4)
+shape = SubResource("CircleShape2D_g4v7s")

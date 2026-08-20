@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bipmmfcsllrrv"]
+
+[ext_resource type="Script" uid="uid://baek6qe0jvmxm" path="res://scripts/food.gd" id="1_a5b01"]
+[ext_resource type="Texture2D" uid="uid://bkgsmx1r27nv7" path="res://sprites/bush.png" id="2_a5b01"]
+[ext_resource type="Texture2D" uid="uid://d1urf286puqc3" path="res://sprites/fruit.png" id="3_l50lj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g4v7s"]
+
+[node name="Node2D" type="Node2D" unique_id=1889496170 groups=["food"]]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1026999285]
+script = ExtResource("1_a5b01")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D" unique_id=1359721674]
+scale = Vector2(2, 2)
+texture = ExtResource("2_a5b01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1060793765]
+scale = Vector2(6.805, 6.805)
+shape = SubResource("CircleShape2D_g4v7s")
+
+[node name="fruit1" type="Sprite2D" parent="Area2D" unique_id=589820045]
+position = Vector2(-26, 6)
+scale = Vector2(2, 2)
+texture = ExtResource("3_l50lj")
+
+[node name="fruit2" type="Sprite2D" parent="Area2D" unique_id=449587436]
+position = Vector2(1, -16)
+scale = Vector2(2, 2)
+texture = ExtResource("3_l50lj")
+
+[node name="fruit3" type="Sprite2D" parent="Area2D" unique_id=736849283]
+position = Vector2(23, 3)
+scale = Vector2(2, 2)
+texture = ExtResource("3_l50lj")
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
