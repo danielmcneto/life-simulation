@@ -7,6 +7,16 @@
 export.cfg
 export_credentials.cfg
 
+# Folder with builds and exes
+exports/
+export/
+build/
+bin/
+
+# Addons folders
+addons/
+Godot_Super-Wakatime-87bfaba53afd6a3c05765a4d6ceb04e204e9be4d/
+
 # Imported translations (automatically generated from CSV files)
 *.translation
 
