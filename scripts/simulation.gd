@@ -43,6 +43,17 @@ func _input(event: InputEvent) -> void:
 		spawn_zezzits(40)
 	if event.is_action_pressed("5"):
 		spawn_zezzits(50)
+	
+	if event.is_action_pressed("E"):
+		Engine.time_scale += 0.5
+		
+	elif event.is_action_pressed("Q"):
+		Engine.time_scale -= 0.5
+		Engine.time_scale = max(0.5, Engine.time_scale)
+		
+	# Aperta seta pra baixo pra voltar ao normal
+	elif event.is_action_pressed("W"):
+		Engine.time_scale = 1.0
 
 func spawn_zezzits(number: int) -> void:
 	var all_zes = get_tree().get_nodes_in_group("zezzits")

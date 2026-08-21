@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dwta7xunqsygw"]
+
+[ext_resource type="Script" uid="uid://dyw2cjkcg8dxe" path="res://scripts/lake.gd" id="1_syibl"]
+[ext_resource type="Texture2D" uid="uid://cjfguxp6881em" path="res://sprites/lake.png" id="2_yj5d5"]
+
+[node name="Node2D" type="Node2D" unique_id=1934959235 groups=["lake"]]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1868154971]
+disable_mode = 1
+collision_layer = 2
+script = ExtResource("1_syibl")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D" unique_id=1480453698]
+scale = Vector2(2, 2)
+texture = ExtResource("2_yj5d5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=1869022304]
+rotation = 1.8214921
+scale = Vector2(1.1199992, 1.1199994)
+build_mode = 1
+polygon = PackedVector2Array(187.96693, 254.3196, 100.82746, 284.89267, 5.950424, 277.18875, -44.246704, 278.68845, -96.01537, 302.2682, -130.34671, 321.38257, -195.91345, 307.20505, -250.65793, 234.51361, -281.00537, 59.573498, -258.7939, -43.147736, -188.78418, -100.30226, -123.63051, -115.95475, -70.85716, -175.9212, -12.90897, -264.05185, 79.61751, -285.68176, 188.89542, -262.05255, 238.11145, -223.04251, 265.04645, -178.32668, 308.44772, 31.4645, 270.96094, 135.00069, 224.90927, 225.24619)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=568059865]
+collision_layer = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=733432837]
+rotation = 1.8214921
+scale = Vector2(0.99999994, 0.99999994)
+build_mode = 1
+polygon = PackedVector2Array(187.96693, 254.3196, 100.82746, 284.89267, 5.950424, 277.18875, -44.246704, 278.68845, -96.01537, 302.2682, -130.34671, 321.38257, -195.91345, 307.20505, -250.65793, 234.51361, -281.00537, 59.573498, -258.7939, -43.147736, -188.78418, -100.30226, -123.63051, -115.95475, -70.85716, -175.9212, -12.90897, -264.05185, 79.61751, -285.68176, 188.89542, -262.05255, 238.11145, -223.04251, 265.04645, -178.32668, 308.44772, 31.4645, 270.96094, 135.00069, 224.90927, 225.24619)
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

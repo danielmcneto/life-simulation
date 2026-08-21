@@ -9,10 +9,13 @@ var is_busy: bool = false
 @export var max_hunger: float = 60
 var hunger: float = 60
 @export var hunger_lost_rate: float = 1
+@export var max_thirsty: float = 60
+var thirsty: float = 60
 
 
 @export var sight_range: float = 500.0
 var target_fruit: Node2D = null
+var target_lake: Node2D = null
 
 var mating_cooldown: float = 5.0
 var gender: int = 0
@@ -22,6 +25,8 @@ var timer: float = 0.0
 
 var animation_time: float = 0.0
 
+var global_delta = 0.0
+
 func _ready() -> void:
 	gender = randi() % 2
 	if modulate == Color(1, 1, 1, 1):
@@ -29,26 +34,31 @@ func _ready() -> void:
 	change_direction()
 
 func _physics_process(delta: float) -> void:
+	global_delta = delta
 	if is_busy:
 		return
 	var metabolic_cost = pow(speed/ 100.0, 1.2) * hunger_lost_rate
+	thirsty -= hunger_lost_rate * delta
 	hunger -= metabolic_cost * delta
 	if hunger <= 0:
 		die()
-
+	if thirsty <= 0:
+		die()
 	if mating_cooldown > 0:
 		mating_cooldown -= delta
 		
 	if hunger <= (max_hunger * 0.5):
 		search_food(delta)
+	elif thirsty <= (max_thirsty * 0.5):
+		search_water(delta)
 	elif hunger >= (max_hunger * 0.8) and mating_cooldown <= 0:
 		try_reproduce()
 	else:
 		timer -= delta
 		if timer <= 0:
 			change_direction()
-
 	velocity = direction * speed
+	
 	move_and_slide()
 	
 	if velocity.length() > 0:
@@ -67,15 +77,21 @@ func _physics_process(delta: float) -> void:
 
 func change_direction() -> void:
 	direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-	timer = randf_range(1.0, 3.0)
+	timer = randf_range(1.0, 2.0)
 
 func eat() -> void:
-	eat_animation()
 	hunger = max_hunger
-	change_direction()
 	stay_still(0.5)
+	boing_animation()
+	change_direction()
 
-func eat_animation() -> void:
+func drink() -> void:
+	thirsty = max_thirsty
+	stay_still(1)
+	boing_animation()
+	change_direction()
+
+func boing_animation() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1.3, 0.7), 0.1)
 	tween.tween_property(self, "scale", Vector2(0.8, 1.2), 0.1)
@@ -91,33 +107,56 @@ func death_animation() -> Tween:
 	return tween
 
 func search_food(delta: float) -> void:
-	if is_instance_valid(target_fruit):
-		if target_fruit.has_method("eat_me") and not target_fruit.eat_me():
-			target_fruit = null 
-	
 	if not is_instance_valid(target_fruit):
 		target_fruit = find_nearest_fruit()
 	
 	if is_instance_valid(target_fruit):
+		var food_area = target_fruit.get_node("Area2D")
 		var dist = global_position.distance_to(target_fruit.global_position)
+	
+		if food_area.fruit_amount <= 0:
+			target_fruit = find_nearest_fruit()
+			change_direction()
+			# Se find_nearest_fruit() retornou null, sai da função pra não tentar ler a posição
+			if not is_instance_valid(target_fruit):
+				velocity = direction * speed
+				return
+
 		if dist > 20.0:
 			direction = global_position.direction_to(target_fruit.global_position)
 			velocity = direction * speed
-			var food_area = target_fruit.get_node("Area2D")
+			
 			if food_area.fruit_amount <= 0:
-				target_fruit = null 
-				change_direction()
+				target_fruit = find_nearest_fruit()
+
 		else:
 			velocity = Vector2.ZERO
-			var food_area = target_fruit.get_node("Area2D")
-			if food_area.fruit_amount > 0:
-				food_area.eat_me() 
-				eat()
-				target_fruit = null
-			else:
-				target_fruit = null 
-				change_direction()
+			eat()
+			food_area.eat_me()
+			change_direction()
 			
+		
+	else:
+		timer -= delta
+		if timer <= 0:
+			change_direction()
+		velocity = direction * speed
+
+func search_water(delta: float) -> void:
+	
+	if not is_instance_valid(target_lake):
+		target_lake = find_nearest_lake()
+	
+	if is_instance_valid(target_lake):
+		var dist = get_distance_to_lake(target_lake)
+		if dist > 50.0:
+			direction = global_position.direction_to(target_lake.global_position)
+			velocity = direction * speed
+		else:
+			velocity = Vector2.ZERO
+			drink()
+			print("bebeu")
+			change_direction()
 	else:
 		timer -= delta
 		if timer <= 0:
@@ -130,15 +169,46 @@ func find_nearest_fruit() -> Node2D:
 	var shortest_distance: float = INF
 	
 	for fruit in all_fruits:
-		if not is_instance_valid(fruit): continue
-		
-		if fruit.get_node("Area2D").fruit_amount <= 0: continue
-			
 		var distance = global_position.distance_to(fruit.global_position)
-		if distance <= sight_range and distance < shortest_distance:
+		if distance <= sight_range and distance < shortest_distance and fruit.get_node("Area2D").fruit_amount > 0:
 			shortest_distance = distance
 			nearest = fruit
 			
+	return nearest
+
+func get_distance_to_lake(lake: Node2D) -> float:
+	# Pega o nó do CollisionPolygon2D dentro do lago (na Area2D da margem)
+	var polygon_node = lake.get_node("Area2D/CollisionPolygon2D")
+	if not polygon_node:
+		return global_position.distance_to(lake.global_position) # Fallback se não achar
+	
+	var polygon = polygon_node.polygon
+	var shortest_dist: float = INF
+	
+	# Percorre todos os segmentos (linhas) que formam a borda do lago
+	for i in range(polygon.size()):
+		var p1 = lake.to_global(polygon[i])
+		var p2 = lake.to_global(polygon[(i + 1) % polygon.size()]) # Conecta o último ponto ao primeiro
+		
+		# Acha o ponto exato na linha da borda que tá mais perto do Zezzit
+		var closest_point = Geometry2D.get_closest_point_to_segment(global_position, p1, p2)
+		var dist = global_position.distance_to(closest_point)
+		
+		if dist < shortest_dist:
+			shortest_dist = dist
+			
+	return shortest_dist
+
+func find_nearest_lake() -> Node2D:
+	var all_lakes = get_tree().get_nodes_in_group("lake")
+	var nearest: Node2D = null
+	var shortest_distance: float = INF
+	
+	for lake in all_lakes:
+		var distance = get_distance_to_lake(lake)
+		if distance <= sight_range:
+			shortest_distance = distance
+			nearest = lake
 	return nearest
 
 func try_reproduce() -> void:
@@ -165,6 +235,11 @@ func try_reproduce() -> void:
 				
 	if is_instance_valid(nearest_partner):
 		reproduce_with(nearest_partner)
+	else:
+		timer -= global_delta
+		if timer <= 0:
+			change_direction()
+		velocity = direction * speed
 
 func reproduce_with(partner: Node2D) -> void:
 	mating_cooldown = 8.0

@@ -16,7 +16,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("2_a5b01")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1060793765]
-scale = Vector2(6.805, 6.805)
+scale = Vector2(10.462723, 9.82973)
 shape = SubResource("CircleShape2D_g4v7s")
 
 [node name="fruit1" type="Sprite2D" parent="Area2D" unique_id=589820045]

@@ -9,7 +9,7 @@
 scale = Vector2(0.6, 0.6)
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1482277861 groups=["zezzits"]]
-collision_mask = 0
+collision_mask = 2
 script = ExtResource("1_axcdq")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=298709636]

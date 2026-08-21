@@ -37,12 +37,6 @@ func _process(delta: float) -> void:
 func can_eat() -> bool:
 	return fruit_amount > 0
 
-func _on_body_entered(body: Node2D) -> void:
-	if body.has_method("eat") and fruit_amount > 0:
-		if body.hunger <= (body.max_hunger * 0.5):
-			body.eat()
-			eat_me()
-
 func eat_me() -> void:
 	fruit_amount -= 1
 	reload_timer = 0.0

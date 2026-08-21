@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bipmmfcsllrrv" path="res://prefabs/comida.tscn" id="1_7ptn5"]
 [ext_resource type="Script" uid="uid://ddmbfii65j4sn" path="res://scripts/simulation.gd" id="1_iuv88"]
+[ext_resource type="PackedScene" uid="uid://dwta7xunqsygw" path="res://prefabs/lake.tscn" id="4_wpwoq"]
 [ext_resource type="Script" uid="uid://dcfc6vwbc63wy" path="res://scripts/data_logger.gd" id="5_cj7xb"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_57qmd"]
@@ -14,16 +15,34 @@ ui_text = NodePath("RichTextLabel")
 position = Vector2(762, -412)
 
 [node name="comida2" parent="." unique_id=1889496170 instance=ExtResource("1_7ptn5")]
-position = Vector2(-440, 498)
+position = Vector2(-82, 504)
 
 [node name="comida3" parent="." unique_id=638270273 instance=ExtResource("1_7ptn5")]
-position = Vector2(551, 110)
+position = Vector2(1019, 3)
 
 [node name="comida4" parent="." unique_id=1245704970 instance=ExtResource("1_7ptn5")]
-position = Vector2(-245, -296)
+position = Vector2(-775, -394)
 
 [node name="comida5" parent="." unique_id=1237330958 instance=ExtResource("1_7ptn5")]
-position = Vector2(-970, 118)
+position = Vector2(646, 341)
+
+[node name="comida6" parent="." unique_id=361640635 instance=ExtResource("1_7ptn5")]
+position = Vector2(-901, 416)
+
+[node name="comida7" parent="." unique_id=79878280 instance=ExtResource("1_7ptn5")]
+position = Vector2(-54, -397)
+
+[node name="comida8" parent="." unique_id=1296151646 instance=ExtResource("1_7ptn5")]
+position = Vector2(210, 168)
+
+[node name="comida9" parent="." unique_id=1319551594 instance=ExtResource("1_7ptn5")]
+position = Vector2(282, -193)
+
+[node name="comida10" parent="." unique_id=78143150 instance=ExtResource("1_7ptn5")]
+position = Vector2(-955, -89)
+
+[node name="Lake" parent="." unique_id=1934959235 instance=ExtResource("4_wpwoq")]
+position = Vector2(-394, 109)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1756843663]
 zoom = Vector2(0.5, 0.5)
