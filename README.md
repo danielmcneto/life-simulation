@@ -22,11 +22,14 @@ A e ecosystem simulator with silly little creatures
 - W to reset the game's velocity
 - Q to speed up the game
 
-### Tech Stack
+## Tech Stack
 
 - **GDscript**
 - **LibreSprite**
+- 
+### How It Works
 
+Each Zezzit has its own DNA (which includes speed, vision range, and color) and its own needs, such as hunger and thirst. They act based on a state machine that determines what they need most and directs them to search for it. After a Zezzit is fed, it starts looking for a mate to reproduce. The child is a mix of the parents' DNA, plus a little genetic mutation—which is what makes the species evolve.
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
